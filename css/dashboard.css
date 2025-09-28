@@ -1,0 +1,71 @@
+
+    body { background: #f5f6fa; font-family: 'Segoe UI', Arial, sans-serif; }
+    .sidebar { background: #151d2a; color: #fff; min-height: 100vh; width: 240px; position: fixed; left: 0; top: 0; bottom: 0; display: flex; flex-direction: column; z-index: 100; }
+    .sidebar .logo { font-weight: bold; font-size: 1.3rem; padding: 32px 0 24px 0; text-align: center; letter-spacing: 0.5px; }
+    .sidebar .user-section { display: flex; align-items: center; gap: 12px; padding: 0 24px 24px 24px; }
+    .sidebar .user-avatar { background: #2563eb; color: #fff; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 600; }
+    .sidebar .user-info { line-height: 1.1; }
+    .sidebar .user-info .name { font-weight: 600; font-size: 1rem; }
+    .sidebar .user-info .role { font-size: 0.9rem; color: #b0b3bb; }
+    .sidebar .nav-link { color: #cfd8e3; font-weight: 500; padding: 12px 24px; border-radius: 6px 0 0 6px; margin-bottom: 4px; display: flex; align-items: center; gap: 12px; transition: background 0.2s, color 0.2s; }
+    .sidebar .nav-link.active, .sidebar .nav-link:hover { background: #2563eb; color: #fff; }
+    .sidebar .logout { margin-top: auto; padding: 24px; color: #cfd8e3; font-size: 1rem; display: flex; align-items: center; gap: 10px; cursor: pointer; border: none; background: none; }
+    .main-content { margin-left: 240px; padding: 32px 32px 0 32px; }
+    .dashboard-header { position: sticky; top: 0; z-index: 5; background: #fff; border-bottom: 1px solid #eef0f3; padding: 14px 12px; margin: -8px -8px 24px -8px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03); }
+    .dashboard-header .mb-0 { margin-left: 8px; }
+    .dashboard-header .user-menu { display: flex; align-items: center; gap: 12px; }
+    .dashboard-header .user-avatar { width: 36px; height: 36px; font-size: 1rem; }
+    .dashboard-header .user-name { font-weight: 500; color: #222; }
+    .card-metric { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03); padding: 20px 24px; display: flex; flex-direction: column; align-items: flex-start; min-width: 180px; min-height: 90px; position: relative; }
+    .section-title { font-weight: 600; font-size: 1.08rem; margin-bottom: 12px; margin-top: 24px; }
+    .card { border-radius: 12px; box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03); border: none; background: #fff; margin-bottom: 24px; transition: transform .15s ease, box-shadow .15s ease; }
+    .card:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+    /* Tables */
+    .table thead th { color: #6b7280; font-weight: 600; font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; border-bottom-color: #e5e7eb; }
+    .table tbody td { vertical-align: middle; }
+    .table-hover tbody tr:hover { background: #f8fafc; }
+    /* Notification dropdown */
+    #notifMenu { max-height: 320px; overflow: auto; }
+    #notifMenu .dropdown-item { border-radius: 6px; }
+    #notifMenu .dropdown-item:hover { background: #f3f4f6; }
+    /* Utility badges for statuses if needed */
+    .badge.rounded-pill { padding: .4em .65em; font-weight: 600; }
+        @media (max-width: 900px) {
+            .main-content { margin-left: 0; padding: 16px 8px 0 8px; }
+            .sidebar {
+                position: static;
+                width: 100%;
+                min-height: auto;
+                flex-direction: column;
+                padding-bottom: 8px;
+            }
+            .sidebar .user-section { padding: 8px 16px; }
+            .sidebar .nav { display: flex; flex-direction: row; gap: 8px; padding: 8px 12px; overflow-x: auto; white-space: nowrap; }
+            .sidebar .nav-link { border-radius: 20px; padding: 8px 14px; margin: 0; }
+            .sidebar .logout { padding: 8px 12px; align-self: flex-end; }
+            .dashboard-header { flex-wrap: wrap; gap: 8px; padding: 10px 8px; margin: -8px -8px 16px -8px; }
+            .dashboard-header .user-name { display: none; }
+            .card-metric { min-width: unset; width: 100%; }
+            .table { font-size: 0.92rem; }
+            .btn-group { flex-wrap: wrap; }
+        }
+
+        /* Improve table readability on small screens */
+        .table-responsive { overflow-x: auto; }
+        .table td, .table th { white-space: nowrap; }
+        /* Truncate long text in narrow columns */
+        .truncate { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        @media (max-width: 576px) {
+            .table td, .table th { white-space: normal; word-break: break-word; }
+            /* Utility to hide cells/columns on extra small screens */
+            .hide-sm { display: none !important; }
+        }
+
+            /* Dim only the Employee Details modal when the Edit Field popout is open */
+            .dim-underlay #employeeDetailModal .modal-content {
+                filter: brightness(0.6);
+            }
+            /* Ensure the Edit Field modal itself stays bright */
+            .dim-underlay #editFieldModal .modal-content {
+                filter: none;
+            }

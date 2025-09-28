@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Employee Management</h3>
+      <button class="btn btn-primary" id="addEmployeeBtn"><i class="fa fa-plus"></i> Add Employee</button>
+    </div>
+    <ul class="nav nav-pills mb-3" id="employeeTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="admin-tab" data-bs-toggle="pill" data-bs-target="#admin-table-pane" type="button" role="tab">Admin</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="technician-tab" data-bs-toggle="pill" data-bs-target="#technician-table-pane" type="button" role="tab">Technician</button>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="admin-table-pane" role="tabpanel">
+        <table class="table table-hover align-middle" id="adminTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="technician-table-pane" role="tabpanel">
+        <table class="table table-hover align-middle" id="technicianTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Employee Details / Reset Password Modal -->
+  <div class="modal fade" id="employeeDetailModal" tabindex="-1" aria-labelledby="employeeDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="employeeDetailModalLabel">Employee Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="employeeDetails"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Add Employee Modal -->
+  <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="addEmployeeForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEmployeeModalLabel">Add Employee</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="employeeName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="employeeName" required>
+          </div>
+          <div class="mb-3">
+            <label for="employeeEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="employeeEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="employeePhone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="employeePhone" required>
+          </div>
+          <div class="mb-3">
+            <label for="employeePassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="employeePassword" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select class="form-select" id="employeeRole" required>
+              <option value="admin">Admin</option>
+              <option value="technician">Technician</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Add</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Edit Field Modal (generic) -->
+  <div class="modal fade" id="editFieldModal" tabindex="-1" aria-labelledby="editFieldModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="editFieldForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editFieldModalLabel">Edit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label" id="editFieldLabel">Value</label>
+            <input type="text" class="form-control" id="editFieldInput" required />
+            <div class="form-text" id="editFieldHelp"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Reset Password Modal (popout) -->
+  <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="resetPasswordForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resetPasswordModalLabel">Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label" for="resetPass1">New Password</label>
+            <input type="password" class="form-control" id="resetPass1" placeholder="Enter new password" required />
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="resetPass2">Confirm New Password</label>
+            <input type="password" class="form-control" id="resetPass2" placeholder="Re-enter new password" required />
+          </div>
+          <div class="form-text">Password must be at least 6 characters.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="../js/employee.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

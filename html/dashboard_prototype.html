@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Field Service Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body {
+      background: #f5f6fa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .sidebar {
+      background: #151d2a;
+      color: #fff;
+      min-height: 100vh;
+      width: 240px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+    .sidebar .logo {
+      font-weight: bold;
+      font-size: 1.3rem;
+      padding: 32px 0 24px 0;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .sidebar .user-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 24px 24px 24px;
+    }
+    .sidebar .user-avatar {
+      background: #2563eb;
+      color: #fff;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .sidebar .user-info {
+      line-height: 1.1;
+    }
+    .sidebar .user-info .name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .sidebar .user-info .role {
+      font-size: 0.9rem;
+      color: #b0b3bb;
+    }
+    .sidebar .nav-link {
+      color: #cfd8e3;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 6px 0 0 6px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sidebar .nav-link.active, .sidebar .nav-link:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+    .sidebar .logout {
+      margin-top: auto;
+      padding: 24px;
+      color: #cfd8e3;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+    .main-content {
+      margin-left: 240px;
+      padding: 32px 32px 0 32px;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .dashboard-header .search-bar {
+      width: 260px;
+    }
+    .dashboard-header .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .dashboard-header .user-avatar {
+      width: 36px;
+      height: 36px;
+      font-size: 1rem;
+    }
+    .dashboard-header .user-name {
+      font-weight: 500;
+      color: #222;
+    }
+    .card-metric {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 180px;
+      min-height: 90px;
+      position: relative;
+    }
+    .card-metric .icon {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 1.2rem;
+      opacity: 0.3;
+    }
+    .card-metric .metric-title {
+      font-size: 0.98rem;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+    .card-metric .metric-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #222;
+    }
+    .card-metric .metric-link {
+      font-size: 0.95rem;
+      color: #2563eb;
+      margin-top: 8px;
+      text-decoration: none;
+    }
+    .card-metric .metric-link:hover {
+      text-decoration: underline;
+    }
+    .section-title {
+      font-weight: 600;
+      font-size: 1.08rem;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+      border: none;
+      background: #fff;
+      margin-bottom: 24px;
+    }
+    .recent-case-title {
+      font-weight: 500;
+      color: #2563eb;
+      font-size: 0.97rem;
+      margin-bottom: 0;
+    }
+    .recent-case-desc {
+      color: #6b7280;
+      font-size: 0.93rem;
+      margin-bottom: 0;
+    }
+    .recent-case-date {
+      color: #b0b3bb;
+      font-size: 0.92rem;
+    }
+    .case-status-bar {
+      height: 7px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .case-status-bar.pending { background: #3b82f6; }
+    .case-status-bar.assigned { background: #fbbf24; }
+    .case-status-bar.inprogress { background: #a78bfa; }
+    .case-status-bar.completed { background: #22c55e; }
+    .technician-avatar {
+      background: #e0e7ef;
+      color: #2563eb;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-right: 10px;
+    }
+    .badge-status {
+      font-size: 0.85rem;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .badge-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+    .badge-dot.available { background: #22c55e; }
+    .badge-dot.onjob { background: #a78bfa; }
+    .btn-assign {
+      background: #e0e7ef;
+      color: #2563eb;
+      border: none;
+      border-radius: 6px;
+      padding: 2px 16px;
+      font-weight: 500;
+      font-size: 0.97rem;
+      transition: background 0.2s;
+    }
+    .btn-assign:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .main-content { margin-left: 0; padding: 16px 4px 0 4px; }
+      .sidebar { position: static; width: 100%; min-height: auto; flex-direction: row; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">Field Service Management</div>
+    <div class="user-section">
+      <div class="user-avatar">A</div>
+      <div class="user-info">
+        <div class="name">Admin User</div>
+        <div class="role">Admin</div>
+      </div>
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link active" href="#"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
+      <a class="nav-link" href="#"><i class="fa-solid fa-briefcase"></i> Cases</a>
+      <a class="nav-link" href="#"><i class="fa-solid fa-users"></i> Technicians</a>
+      <a class="nav-link" href="#"><i class="fa-solid fa-user"></i> Profile</a>
+      <a class="nav-link" href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+    </nav>
+    <button class="logout mt-auto"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+  </div>
+  <div class="main-content">
+    <div class="dashboard-header">
+      <h4 class="mb-0">Admin Dashboard</h4>
+      <div class="d-flex align-items-center gap-3">
+        <input type="text" class="form-control search-bar" placeholder="Search...">
+        <div class="user-menu">
+          <div class="user-avatar">A</div>
+          <span class="user-name">Admin User</span>
+        </div>
+      </div>
+    </div>
+    <!-- Metrics -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <div class="card-metric">
+          <span class="metric-title">Pending Cases</span>
+          <span class="metric-value">1</span>
+          <a href="#" class="metric-link">View all <i class="fa-solid fa-arrow-right"></i></a>
+          <span class="icon"><i class="fa-regular fa-clock"></i></span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-metric">
+          <span class="metric-title">In Progress</span>
+          <span class="metric-value">2</span>
+          <a href="#" class="metric-link">View all <i class="fa-solid fa-arrow-right"></i></a>
+          <span class="icon"><i class="fa-regular fa-clock"></i></span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-metric">
+          <span class="metric-title">Completed Today</span>
+          <span class="metric-value">0</span>
+          <a href="#" class="metric-link">View all <i class="fa-solid fa-arrow-right"></i></a>
+          <span class="icon"><i class="fa-regular fa-clock"></i></span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-metric">
+          <span class="metric-title">Active Technicians</span>
+          <span class="metric-value">5</span>
+          <a href="#" class="metric-link">View all <i class="fa-solid fa-arrow-right"></i></a>
+          <span class="icon"><i class="fa-regular fa-clock"></i></span>
+        </div>
+      </div>
+    </div>
+    <!-- Recent Cases & Technicians -->
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="section-title mb-0">Recent Cases</span>
+            <a href="#" class="metric-link">View All</a>
+          </div>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-3">
+              <div class="recent-case-title"><span class="text-primary">&#9679;</span> Electrical Fault in Office Building</div>
+              <div class="recent-case-desc">ABC Corporation</div>
+              <div class="recent-case-date">5/13/2025</div>
+            </li>
+            <li class="mb-3">
+              <div class="recent-case-title"><span class="text-primary">&#9679;</span> HVAC Maintenance</div>
+              <div class="recent-case-desc">Grand Hotel</div>
+              <div class="recent-case-date">5/13/2025</div>
+            </li>
+            <li class="mb-3">
+              <div class="recent-case-title"><span class="text-primary">&#9679;</span> Plumbing Leak</div>
+              <div class="recent-case-desc">City Apartments</div>
+              <div class="recent-case-date">5/13/2025</div>
+            </li>
+            <li class="mb-3">
+              <div class="recent-case-title"><span class="text-primary">&#9679;</span> Internet Connectivity Issue</div>
+              <div class="recent-case-desc">Tech Solutions Inc</div>
+              <div class="recent-case-date">5/12/2025</div>
+            </li>
+            <li>
+              <div class="recent-case-title"><span class="text-primary">&#9679;</span> General Maintenance Check</div>
+              <div class="recent-case-desc">Office Complex</div>
+              <div class="recent-case-date">5/13/2025</div>
+            </li>
+          </ul>
+        </div>
+        <div class="card p-3">
+          <span class="section-title">Case Status Distribution</span>
+          <div class="mb-2">Pending</div>
+          <div class="case-status-bar pending mb-2" style="width: 20%"></div>
+          <div class="mb-2">Assigned</div>
+          <div class="case-status-bar assigned mb-2" style="width: 60%"></div>
+          <div class="mb-2">In Progress</div>
+          <div class="case-status-bar inprogress mb-2" style="width: 80%"></div>
+          <div class="mb-2">Completed</div>
+          <div class="case-status-bar completed mb-2" style="width: 40%"></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card p-3 mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="section-title mb-0">Technicians</span>
+            <a href="#" class="metric-link">+ Add New</a>
+          </div>
+          <ul class="list-unstyled mb-0">
+            <li class="d-flex align-items-center mb-3">
+              <span class="technician-avatar">J</span>
+              <div>
+                <div class="fw-semibold">John Smith</div>
+                <div class="small text-muted">
+                  <span class="badge bg-light text-dark border me-1">HVAC</span>
+                  <span class="badge bg-light text-dark border me-1">Electrical</span>
+                  <span class="badge bg-light text-dark border me-1">+1 more</span>
+                </div>
+              </div>
+              <span class="ms-auto badge-dot available"></span>
+              <span class="badge-status text-success">Available</span>
+            </li>
+            <li class="d-flex align-items-center mb-3">
+              <span class="technician-avatar">E</span>
+              <div>
+                <div class="fw-semibold">Emily Johnson</div>
+                <div class="small text-muted">
+                  <span class="badge bg-light text-dark border me-1">Networking</span>
+                  <span class="badge bg-light text-dark border me-1">IT</span>
+                  <span class="badge bg-light text-dark border me-1">+2 more</span>
+                </div>
+              </div>
+              <span class="ms-auto badge-dot onjob"></span>
+              <span class="badge-status text-primary">On Job</span>
+            </li>
+            <li class="d-flex align-items-center mb-3">
+              <span class="technician-avatar">M</span>
+              <div>
+                <div class="fw-semibold">Michael Wong</div>
+                <div class="small text-muted">
+                  <span class="badge bg-light text-dark border me-1">Plumbing</span>
+                  <span class="badge bg-light text-dark border me-1">General Maintenance</span>
+                  <span class="badge bg-light text-dark border me-1">+1 more</span>
+                </div>
+              </div>
+              <span class="ms-auto badge-dot onjob"></span>
+              <span class="badge-status text-primary">On Job</span>
+            </li>
+            <li class="d-flex align-items-center mb-3">
+              <span class="technician-avatar">S</span>
+              <div>
+                <div class="fw-semibold">Sarah Chen</div>
+                <div class="small text-muted">
+                  <span class="badge bg-light text-dark border me-1">Electrical</span>
+                  <span class="badge bg-light text-dark border me-1">Solar Panel Installation</span>
+                  <span class="badge bg-light text-dark border me-1"></span>
+                </div>
+              </div>
+              <span class="ms-auto badge-dot available"></span>
+              <span class="badge-status text-success">Available</span>
+            </li>
+          </ul>
+        </div>
+        <div class="card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="section-title mb-0">Unassigned Cases</span>
+            <a href="#" class="metric-link">New Case</a>
+          </div>
+          <div class="d-flex align-items-center mb-2">
+            <div>
+              <div class="recent-case-title">Electrical Fault in Office Building</div>
+              <div class="recent-case-desc">ABC Corporation · Electrical</div>
+            </div>
+            <button class="btn-assign ms-auto">Assign</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

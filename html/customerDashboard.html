@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard FSM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+
+  <!-- Styles -->
+  <style></style>
+
+  <!-- Scripts -->
+  <script src="../js/customerDashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Logo -->
+        <div class="logo">Field Service Management</div>
+
+        <!-- User Section -->
+        <div class="user-section">
+            
+            <div class="user-avatar" id="avatar">U</div>
+
+            <div class="user-info">
+                <div class="name" id="userName">User Name</div>
+                <div class="role" id="userRole">Role</div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <nav class="nav flex-column" id="sidebarNav">
+            <!-- 动态填充菜单 -->
+        </nav>
+
+        <!-- Logout Button -->
+        <button class="logout mt-auto" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+
+        <!-- Dashboard Header -->
+        <div class="dashboard-header d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-0" id="dashboardTitle">Dashboard</h4>
+            </div>
+                        <div class="d-flex align-items-center gap-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-light position-relative" id="notifBtn" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+                                        <i class="fa-regular fa-bell"></i>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notifBadge">0</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width: 280px; max-height: 320px; overflow:auto;" id="notifMenu">
+                                        <li class="text-muted small px-2">No notifications</li>
+                                    </ul>
+                                </div>
+                                <button class="btn btn-outline-primary" id="openCaseModalBtn"><i class="fa fa-plus"></i> New Case</button>
+                        </div>
+        </div>
+
+        <!-- Case Submission Modal -->
+        <div class="modal fade" id="caseModal" tabindex="-1" aria-labelledby="caseModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="caseModalLabel"><i class="fa-regular fa-pen-to-square me-2"></i>Submit a New Case</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="caseForm" class="mb-0">
+                                    <div class="mb-3">
+                                        <label for="caseDesc" class="form-label">Description</label>
+                                        <textarea class="form-control" id="caseDesc" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="caseType" class="form-label">Type</label>
+                                        <select class="form-select" id="caseType" required>
+                                            <option value="warranty">warranty</option>
+                                            <option value="non-warranty">non-warranty</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="caseService" class="form-label">Service</label>
+                                        <select class="form-select" id="caseService" required>
+                                            <option value="">Select a service</option>
+                                        </select>
+                                    </div>
+                                    <div id="case-feedback" class="mt-2 text-success" style="display:none;"></div>
+                                    <div class="modal-footer px-0">
+                                        <button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk me-1"></i> Draft Case</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+</body>
+</html>
